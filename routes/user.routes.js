@@ -11,10 +11,10 @@ userRouter.post("/register",async(req,res)=>{
         bcrypt.hash(pass, 5, async (err, hash) => {
             const user=new UserModel({username,email,pass:hash})
             await user.save()
-            res.status(200).send({"msg":"A new user has been registered"})
+            res.status(200).json({msg:"A new user has been registered"})
         })
     } catch(err){
-        res.status(400).send({"error":err})
+        res.status(400).json({error:err})
     }
 })
 
@@ -25,13 +25,13 @@ userRouter.post("/login",async(req,res)=>{
         bcrypt.compare(pass, user.pass, async (err, result) => {
             if(result){
                 const token=jwt.sign({userID:user._id,username:user.username},"masai")
-                res.status(200).send({"msg":"Login Successfull!","token":token})
+                res.status(200).json({msg:"Login Successfull!",token})
             } else {
-                res.status(200).send({"msg":"Wrong Credentials"})
+                res.status(200).json({msg:"Wrong Credentials"})
             }
         })
     } catch(err){
-        res.status(400).send({"error":err})
+        res.status(400).json({error:err})
     }
 })
 
